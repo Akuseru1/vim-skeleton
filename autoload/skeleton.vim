@@ -8,7 +8,7 @@ let g:autoloaded_vim_skeleton = 1
 
 " Try to expand the snippet named _skel
 function! s:try_insert(skel)
-  execute 'normal! i_' . a:skel . "\<C-r>=UltiSnips#ExpandSnippet()\<CR>"
+  execute 'normal! i_' . a:skel . "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand',''])\<CR>"
 
   if g:ulti_expand_res == 0
     silent! undo
@@ -31,7 +31,7 @@ endfunction
 
 function! skeleton#insert_skeleton() abort
   " Abort on non-empty buffer or extant file
-  if !exists('g:did_plugin_ultisnips') || !(line('$') ==# 1 && getline('$') ==# '') || filereadable(expand('%:p'))
+  if !(g:coc_snippets_activated) || !(line('$') ==# 1 && getline('$') ==# '') || filereadable(expand('%:p'))
     return
   endif
 
